@@ -99,7 +99,7 @@ export default function Dashboard() {
 							</label>
 							<input
 								type="text"
-								placeholder="Search student..."
+								placeholder="Enter student"
 								value={newStudent.student_name}
 								onChange={(e) =>
 									setNewStudent({ ...newStudent, student_name: e.target.value })

@@ -36,45 +36,57 @@ export default function History() {
 					</tr>
 				</thead>
 				<tbody>
-					{allGatepasses.map((gatepass, index) => (
-						<tr
-							key={gatepass.gatepass_id}
-							className={`${
-								index % 2 === 0 ? 'bg-danger/20' : 'bg-danger/10'
-							} hover:bg-secondary/30 transition-colors`}
-						>
-							<td className="px-4 py-3 text-center">{gatepass.student_name}</td>
-							<td className="px-4 py-3 text-center">{gatepass.section}</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.gatepass_code}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.sanction_type || '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.late_minutes || '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.time_out && gatepass.time_in
-									? `${new Date(gatepass.time_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(gatepass.time_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-									: '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.expected_return_time
-									? new Date(gatepass.expected_return_time).toLocaleTimeString(
-											[],
-											{
+					{allGatepasses.length > 0 ? (
+						allGatepasses.map((gatepass, index) => (
+							<tr
+								key={gatepass.gatepass_id}
+								className={`${
+									index % 2 === 0 ? 'bg-danger/20' : 'bg-danger/10'
+								} hover:bg-secondary/30 transition-colors`}
+							>
+								<td className="px-4 py-3 text-center">
+									{gatepass.student_name}
+								</td>
+								<td className="px-4 py-3 text-center">{gatepass.section}</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.gatepass_code}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.sanction_type || '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.late_minutes || '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.time_out && gatepass.time_in
+										? `${new Date(gatepass.time_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(gatepass.time_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+										: '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.expected_return_time
+										? new Date(
+												gatepass.expected_return_time
+											).toLocaleTimeString([], {
 												hour: '2-digit',
 												minute: '2-digit',
-											}
-										)
-									: '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{gatepass.sanction_reason || '-'}
+											})
+										: '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{gatepass.sanction_reason || '-'}
+								</td>
+							</tr>
+						))
+					) : (
+						<tr>
+							<td
+								colSpan="8"
+								className="px-4 py-6 text-center text-gray-500 italic"
+							>
+								No data found
 							</td>
 						</tr>
-					))}
+					)}
 				</tbody>
 			</table>
 		</div>
