@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/*
+  ==========================
+  Calling System Variables
+  ==========================
+*/
+@theme {
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-highlight: var(--color-highlight);
+  --color-accent: var(--color-accent);
+  --color-dark: var(--color-dark);
+  --color-gray: var(--color-gray);
+  --color-light: var(--color-light);
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  /* Typography */
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-size-sm: var(--font-size-sm);
+  --font-size-base: var(--font-size-base);
+  --font-size-lg: var(--font-size-lg);
+  --font-size-xl: var(--font-size-xl);
+
+  /* Spacing (margin & padding scale) */
+  --space-xs: var(--space-xs);
+  --space-sm: var(--space-sm);
+  --space-md: var(--space-md);
+  --space-lg: var(--space-lg);
+  --space-xl: var(--space-xl);
+
+  /* Border Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  /* Shadows */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* Transitions */
+  --transition: var(--transition);
+}
+
+/* =========================
+   Design System Variables
+   ========================= */
+:root {
+  /* Colors */
+  --color-primary: #006CB7;   /* STI Blue */
+  --color-secondary: #FEF200; /* STI Yellow */
+  --color-highlight: #004B80; /* Darker STI Blue */
+  --color-accent: #f9fafb;    /* Light background (neutral) */
+  --color-dark: #1d1d1d;      /* Dark text */
+  --color-gray: #6c757d;      /* Neutral gray */
+  --color-light: #f9fafb;     /* Light text (zinc-400) */
+  --color-success: #2a9d8f;   /* Green for success */
+  --color-warning: #e9c46a;   /* Muted yellow for warnings */
+  --color-danger: #e63946;    /* Red for errors */
+
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+
+  /* Spacing (margin & padding scale) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
+
+  /* Transitions */
+  --transition: all 0.3s ease;
+}
+
+/* Dark Mode Colors */
+.dark {
+  /* Primary Colors - Adjusted for dark mode */
+  --color-primary: #4A9EE0;   /* Lighter STI Blue for better contrast */
+  --color-secondary: #FEF200; /* Keep STI Yellow (works well on dark) */
+  --color-highlight: #66B3E6; /* Even lighter blue for highlights */
+  --color-accent: #2d3748;    /* Dark accent background */
+  --color-dark: #f7fafc;      /* Light text (inverted) */
+  --color-gray: #a0aec0;      /* Lighter gray for better readability */
+  --color-light: #2d3748;     /* Dark background (inverted) */
+  --color-success: #38d9a9;   /* Brighter green for dark mode */
+  --color-warning: #f6e05e;   /* Brighter yellow for warnings */
+  --color-danger: #fc8181;    /* Lighter red for better contrast */
+
+  /* Background Colors */
+  --bg-primary: #1a202c;      /* Dark main background */
+  --bg-secondary: #2d3748;    /* Dark secondary background */
+  --bg-tertiary: #4a5568;     /* Dark tertiary background */
+
+  /* Text Colors */
+  --text-primary: #f7fafc;    /* Light primary text */
+  --text-secondary: #e2e8f0;  /* Light secondary text */
+  --text-muted: #a0aec0;      /* Muted light text */
+
+  /* Border Colors */
+  --border-primary: #4a5568;  /* Dark primary border */
+  --border-secondary: #2d3748; /* Dark secondary border */
+
+  /* Shadows - Adjusted for dark mode */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================
+   Global Styles
+   ========================= */
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  color: var(--color-dark);
+  background: var(--color-accent);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #001642; /* darker STI blue */
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: #000; /* yellow works best with dark text */
+}
+
+.btn-secondary:hover {
+  background: #e6b422; /* darker gold */
+}
+
+/*Logo & icons*/
+.logo {
+  height: 84px;
+  width: 84px;
+}
+
+.icon {
+  font-size: 24px;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
+  margin: var(--space-md) 0;
+  border-top: 4px solid var(--color-primary);
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-light {
+  color: var(--color-light);
+}
+
+.mt-md {
+  margin-top: var(--space-md);
+}
+
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+
+.p-md {
+  padding: var(--space-md);
+}
+
+/* Responsive Table Wrapper */
+.table-container {
+  width: 100%;
+  overflow-x: auto;   /* Enables horizontal scroll if table is too wide */
+  -webkit-overflow-scrolling: touch; /* Smooth scroll on mobile */
+  margin-top: 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Table */
+.table {
+  width: 100%;
+  min-width: 600px; /* ensures columns don't collapse too much */
+  border-collapse: collapse;
+  background: #fff;
+}
+
+/* Table Cells */
+.table th, .table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: var(--font-size-sm);
+  white-space: nowrap; /* prevents text from breaking oddly */
+}
+
+/* Table Header */
+.table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .table th, .table td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
