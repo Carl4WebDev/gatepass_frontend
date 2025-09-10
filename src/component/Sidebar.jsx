@@ -2,6 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { logoutClient } from '../api/authService';
 
+import Logo from '../assets/SSC Logo.png';
+
 export default function Sidebar() {
 	const Navigate = useNavigate();
 
@@ -51,7 +53,7 @@ export default function Sidebar() {
 						to="/gatepass"
 						className="flex items-center space-x-4 font-semibold md:flex-col"
 					>
-						<img src="/public/Logo/SSC Logo.png" alt="SSC" className="logo" />
+						<img src={Logo} alt="SSC" className="logo" />
 						<h1 className="text-light translate-y-2 md:text-2xl lg:text-4xl">
 							GATEPASS
 						</h1>
