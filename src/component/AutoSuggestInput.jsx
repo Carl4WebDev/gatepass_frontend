@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export default function AutoSuggestInput({
 	label,
 	placeholder,
@@ -29,9 +31,7 @@ export default function AutoSuggestInput({
 		const fetchResults = async () => {
 			setLoading(true);
 			try {
-				const res = await axios.get(
-					`http://localhost:5000/student/search?q=${query}`
-				);
+				const res = await axios.get(`${API_BASE}/student/search?q=${query}`);
 				setResults(res.data.data || []);
 				setShowDropdown(true);
 			} catch (err) {

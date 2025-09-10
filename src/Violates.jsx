@@ -5,6 +5,8 @@ import Violates from './component/Violates';
 import History from './component/History';
 import './index.css';
 
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export default function App() {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -46,21 +48,22 @@ export default function App() {
 					<div className="p-4 sm:p-6 lg:p-8">
 						<div className="flex flex-wrap gap-3">
 							<a
-								href="http://localhost:5000/prints/export/not-sanctioned"
+								href={`${API_BASE}/prints/export/not-sanctioned`}
 								download
 								className="bg-primary rounded-md px-5 py-2 text-white hover:bg-blue-500"
 							>
 								Download Not Sanctioned
 							</a>
+
 							<a
-								href="http://localhost:5000/prints/export/sanctioned"
+								href={`${API_BASE}/prints/export/sanctioned`}
 								download
 								className="bg-primary rounded-md px-5 py-2 text-white hover:bg-blue-500"
 							>
 								Download Sanctioned Students
 							</a>
 							<a
-								href="http://localhost:5000/prints/export/all"
+								href={`${API_BASE}/prints/export/all`}
 								download
 								className="bg-primary rounded-md px-5 py-2 text-white hover:bg-blue-500"
 							>

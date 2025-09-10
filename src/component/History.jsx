@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useGatepass } from '../hooks/useGatepass'; // adjust the path
 
 export default function History() {

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { GatepassContext } from './GatepassContext';
 import axios from 'axios';
 import { useError } from '../../hooks/useError';
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export const GatepassProvider = ({ children }) => {
 	const [loading, setLoading] = useState(false);
@@ -19,10 +20,11 @@ export const GatepassProvider = ({ children }) => {
 		setSuccess(null);
 
 		try {
-			const res = await axios.post(
-				'http://localhost:5000/gatepass/add-gatepass',
-				{ student_name, section, gatepass_code }
-			);
+			const res = await axios.post(`${API_BASE}/gatepass/add-gatepass`, {
+				student_name,
+				section,
+				gatepass_code,
+			});
 
 			if (res.data.success) {
 				setSuccess('✅ Gatepass added successfully');
@@ -42,7 +44,7 @@ export const GatepassProvider = ({ children }) => {
 	const returnGatepass = async (gatepass_code, student_name) => {
 		try {
 			// Send POST request to backend
-			await axios.post('http://localhost:5000/gatepass/return-gatepass', {
+			await axios.post(`${API_BASE}/gatepass/return-gatepass`, {
 				gatepass_code: gatepass_code,
 				student_name: student_name,
 			});
@@ -62,7 +64,7 @@ export const GatepassProvider = ({ children }) => {
 		setLoading(true);
 
 		try {
-			const res = await axios.get('http://localhost:5000/gatepass/active');
+			const res = await axios.get(`${API_BASE}/gatepass/active`);
 			if (res.data.success) {
 				setActiveGatepasses(res.data.data);
 			} else {
@@ -78,7 +80,7 @@ export const GatepassProvider = ({ children }) => {
 	// ✅ Fetch sanctions
 	const fetchSanctions = async () => {
 		try {
-			const res = await axios.get('http://localhost:5000/gatepass/sanctions');
+			const res = await axios.get(`${API_BASE}}/gatepass/sanctions`);
 			if (res.data.success) {
 				setSanctions(res.data.data);
 			} else {
@@ -96,7 +98,7 @@ export const GatepassProvider = ({ children }) => {
 			console.log('Sending request to edit gatepass:', id, updates);
 
 			const res = await axios.put(
-				`http://localhost:5000/gatepass/edit-gatepass/${id}`,
+				`${API_BASE}/gatepass/edit-gatepass/${id}`,
 				updates
 			);
 
@@ -120,9 +122,7 @@ export const GatepassProvider = ({ children }) => {
 	const fetchAllGatepasses = async () => {
 		setLoading(true);
 		try {
-			const res = await axios.get(
-				'http://localhost:5000/gatepass/all-gatepass'
-			);
+			const res = await axios.get(`${API_BASE}/gatepass/all-gatepass`);
 			if (res.data.success) {
 				setAllGatepasses(res.data.data);
 			} else {
@@ -149,9 +149,7 @@ export const GatepassProvider = ({ children }) => {
 
 		setLoading(true);
 		try {
-			const res = await axios.delete(
-				'http://localhost:5000/gatepass/delete-all'
-			);
+			const res = await axios.delete(`${API_BASE}/gatepass/delete-all`);
 			if (res.data.success) {
 				setActiveGatepasses([]);
 				setAllGatepasses([]);
