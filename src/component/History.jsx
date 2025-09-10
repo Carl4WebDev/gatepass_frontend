@@ -77,24 +77,6 @@ export default function History() {
 					))}
 				</tbody>
 			</table>
-
-			<style jsx>{`
-				.table-container {
-					max-height: 70vh;
-					max-width: 100%;
-					overflow-x: auto;
-					overflow-y: auto;
-				}
-				.scrollable-table {
-					min-width: 800px;
-					border-collapse: collapse;
-				}
-				.scrollable-table thead {
-					position: sticky;
-					top: 0;
-					z-index: 10;
-				}
-			`}</style>
 		</div>
 	);
 }

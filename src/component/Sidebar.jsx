@@ -100,27 +100,6 @@ export default function Sidebar() {
 					</div>
 				</div>
 			</aside>
-
-			<style jsx>{`
-				@keyframes ripple {
-					0% {
-						transform: scale(0);
-						opacity: 0.6;
-					}
-					100% {
-						transform: scale(4);
-						opacity: 0;
-					}
-				}
-
-				.ripple {
-					position: absolute;
-					border-radius: 50%;
-					background-color: rgba(255, 255, 255, 0.6);
-					animation: ripple 0.6s linear;
-					pointer-events: none;
-				}
-			`}</style>
 		</>
 	);
 }

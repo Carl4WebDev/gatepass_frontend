@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'; // Add this import
 import { useError } from '../hooks/useError';
 import { loginClient } from '../api/authService';
 
+import Logo from '../assets/SSC Logo.png';
+
 export default function Login() {
 	const { showError } = useError();
 
@@ -28,11 +30,7 @@ export default function Login() {
 		<div className="bg-accent flex min-h-screen items-center justify-center">
 			<div className="bg-accebt w-full max-w-md rounded-lg p-8 shadow-lg">
 				<h2 className="mb-6 text-center text-2xl font-bold">Login</h2>
-				<img
-					src="/public/Logo/SSC Logo.png"
-					alt="SSC"
-					className="mx-auto h-40 w-40"
-				/>
+				<img src={Logo} alt="SSC" className="mx-auto h-40 w-40" />
 
 				{error && (
 					<div className="border-danger/20 bg-danger/10 mb-4 rounded-md border p-3">

@@ -8,6 +8,12 @@ export default function Violates() {
 	const [editedReason, setEditedReason] = useState('');
 	const [editedType, setEditedType] = useState(''); // LATE or DNR
 
+	const [searchTerm, setSearchTerm] = useState('');
+
+	const filteredSanctions = sanctions.filter((s) =>
+		s.student_name.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
 	useEffect(() => {
 		// fetch all sanctions on mount
 		fetchSanctions(); // ✅ implement in provider
@@ -73,6 +79,16 @@ export default function Violates() {
 
 	return (
 		<div className="table-container">
+			{/* Search Input */}
+			<div className="mb-4">
+				<input
+					type="text"
+					placeholder="Search by student name..."
+					className="focus:ring-primary w-full rounded-md border p-2 focus:ring-2 focus:outline-none"
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
+			</div>
+
 			<table className="bg-accent scrollable-table w-full overflow-hidden rounded-md shadow-sm">
 				<thead className="bg-primary text-light">
 					<tr>
@@ -98,46 +114,65 @@ export default function Violates() {
 					</tr>
 				</thead>
 				<tbody>
-					{sanctions.map((s, index) => (
-						<tr
-							key={s.gatepass_id}
-							className={`${
-								index % 2 === 0 ? 'bg-danger/20' : 'bg-danger/10'
-							} hover:bg-secondary/30 transition-colors`}
-						>
-							<td className="px-4 py-3 text-center">{s.student_name}</td>
-							<td className="px-4 py-3 text-center">{s.section}</td>
-							<td className="px-4 py-3 text-center">{s.gatepass_code}</td>
-							<td className="px-4 py-3 text-center">{s.sanction_type}</td>
-							<td className="px-4 py-3 text-center">{s.late_minutes || '-'}</td>
-							<td className="px-4 py-3 text-center">
-								{s.time_out && s.time_in
-									? `${new Date(s.time_out).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(s.time_in).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-									: '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								{s.expected_return_time
-									? new Date(s.expected_return_time).toLocaleTimeString([], {
-											hour: '2-digit',
-											minute: '2-digit',
-										})
-									: '-'}
-							</td>
+					{filteredSanctions.length > 0 ? (
+						filteredSanctions.map((s, index) => (
+							<tr
+								key={s.gatepass_id}
+								className={`${
+									index % 2 === 0 ? 'bg-danger/20' : 'bg-danger/10'
+								} hover:bg-secondary/30 transition-colors`}
+							>
+								<td className="px-4 py-3 text-center">{s.student_name}</td>
+								<td className="px-4 py-3 text-center">{s.section}</td>
+								<td className="px-4 py-3 text-center">{s.gatepass_code}</td>
+								<td className="px-4 py-3 text-center">{s.sanction_type}</td>
+								<td className="px-4 py-3 text-center">
+									{s.late_minutes || '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{s.time_out && s.time_in
+										? `${new Date(s.time_out).toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit',
+											})} - ${new Date(s.time_in).toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit',
+											})}`
+										: '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									{s.expected_return_time
+										? new Date(s.expected_return_time).toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit',
+											})
+										: '-'}
+								</td>
 
-							<td className="px-4 py-3 text-center">
-								{s.sanction_reason || '-'}
-							</td>
-							<td className="px-4 py-3 text-center">
-								<button
-									onClick={(e) => handleButtonClick(e, s)}
-									className="bg-primary text-light relative transform cursor-pointer overflow-hidden rounded px-2 py-1 shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-95"
-								>
-									<div className="ripple-container absolute inset-0"></div>
-									<span className="relative z-10">Edit</span>
-								</button>
+								<td className="px-4 py-3 text-center">
+									{s.sanction_reason || '-'}
+								</td>
+								<td className="px-4 py-3 text-center">
+									<button
+										onClick={(e) => handleButtonClick(e, s)}
+										className="bg-primary text-light relative transform cursor-pointer overflow-hidden rounded px-2 py-1 shadow-sm transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:scale-105 hover:shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-95"
+									>
+										<div className="ripple-container absolute inset-0"></div>
+										<span className="relative z-10">Edit</span>
+									</button>
+								</td>
+							</tr>
+						))
+					) : (
+						<tr>
+							<td
+								colSpan="9"
+								className="px-4 py-6 text-center text-gray-500 italic"
+							>
+								No data found
 							</td>
 						</tr>
-					))}
+					)}
 				</tbody>
 			</table>
 
@@ -182,41 +217,6 @@ export default function Violates() {
 					</div>
 				</div>
 			)}
-
-			<style jsx>{`
-				@keyframes ripple {
-					0% {
-						transform: scale(0);
-						opacity: 0.6;
-					}
-					100% {
-						transform: scale(4);
-						opacity: 0;
-					}
-				}
-				.ripple {
-					position: absolute;
-					border-radius: 50%;
-					background-color: rgba(255, 255, 255, 0.6);
-					animation: ripple 0.6s linear;
-					pointer-events: none;
-				}
-				.table-container {
-					max-height: 70vh;
-					max-width: 100%;
-					overflow-x: auto;
-					overflow-y: auto;
-				}
-				.scrollable-table {
-					min-width: 800px;
-					border-collapse: collapse;
-				}
-				.scrollable-table thead {
-					position: sticky;
-					top: 0;
-					z-index: 10;
-				}
-			`}</style>
 		</div>
 	);
 }

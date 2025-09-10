@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+import Logo from '../assets/SSC Logo.png';
+
 export default function Navbar(props) {
 	const navigate = useNavigate();
 	const [isDarkMode, setIsDarkMode] = useState(false);
@@ -143,11 +145,7 @@ export default function Navbar(props) {
 							<div className="flex-1 space-y-6">
 								{/* Logo and Title */}
 								<div className="flex flex-col items-center space-y-4">
-									<img
-										src="/public/Logo/SSC Logo.png"
-										alt="SSC"
-										className="h-16 w-16"
-									/>
+									<img src={Logo} alt="SSC" className="h-16 w-16" />
 									<h1 className="text-light text-2xl font-bold">GATEPASS</h1>
 								</div>
 
@@ -239,27 +237,6 @@ export default function Navbar(props) {
 					</div>
 				</div>
 			)}
-
-			<style jsx>{`
-				@keyframes ripple {
-					0% {
-						transform: scale(0);
-						opacity: 0.6;
-					}
-					100% {
-						transform: scale(4);
-						opacity: 0;
-					}
-				}
-
-				.ripple {
-					position: absolute;
-					border-radius: 50%;
-					background-color: rgba(255, 255, 255, 0.6);
-					animation: ripple 0.6s linear;
-					pointer-events: none;
-				}
-			`}</style>
 		</nav>
 	);
 }

@@ -2,17 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import AutoSuggestInput from './AutoSuggestInput';
 
 import { useGatepass } from '../hooks/useGatepass';
+import { useError } from '../hooks/useError';
 
 import NewStudentModal from './NewStudentModal';
 
 export default function Dashboard() {
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	// const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const { showError } = useError();
+
 	const {
 		addGatepass,
 		returnGatepass,
 		activeGatepasses,
 		fetchActiveGatepasses,
 		setActiveGatepasses,
+		loading,
 	} = useGatepass();
 
 	const [newStudent, setNewStudent] = useState({
@@ -28,7 +33,6 @@ export default function Dashboard() {
 
 	const handleAddStudent = async (e) => {
 		e.preventDefault();
-		console.log('Submitting:', newStudent); // ✅ see exactly what’s being sent
 		await addGatepass(
 			newStudent.student_name,
 			newStudent.section,
@@ -42,7 +46,6 @@ export default function Dashboard() {
 	};
 
 	const handleReturnGatepass = async (student) => {
-		console.log(student);
 		await returnGatepass(student.gatepass_code, student.student_name);
 	};
 
@@ -76,55 +79,53 @@ export default function Dashboard() {
 						prev.filter((gp) => gp.gatepass_id !== student.gatepass_id)
 					);
 				} catch (err) {
-					console.error('Error auto-returning:', student.student_name, err);
+					showError('Error auto-returning:', student.student_name, err);
 				}
 			}
 		}
 	};
 
+	if (loading) return <p className="mt-4 text-center">Loading...</p>;
 	return (
 		<div className="bg-accent flex p-4 sm:p-6 lg:max-h-[70vh]">
 			<div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-10">
 				{/* Left Side - Form */}
 				<div className="bg-accent w-full rounded-lg p-4 shadow-md sm:p-6 lg:w-96 lg:max-w-96 lg:min-w-96">
 					<form onSubmit={handleAddStudent} className="space-y-4">
-						<AutoSuggestInput
-							label="Student Name (Ex: Last Name, First Name)"
-							placeholder="Search student..."
-							value={newStudent.student_name}
-							onSelect={(student) =>
-								setNewStudent((prev) => ({
-									...prev,
-									student_name: student.student_name || prev.student_name,
-									section: student.section || prev.section,
-									id: student.student_id || prev.id,
-								}))
-							}
-							searchField="student_name"
-							type="name"
-						/>
+						{/* Student Name */}
+						<div className="mb-4">
+							<label className="mb-1 block text-sm font-medium">
+								Student Name (Ex: LAST NAME FIRST NAME)
+							</label>
+							<input
+								type="text"
+								placeholder="Search student..."
+								value={newStudent.student_name}
+								onChange={(e) =>
+									setNewStudent({ ...newStudent, student_name: e.target.value })
+								}
+								className="w-full rounded border px-3 py-2 focus:ring focus:ring-blue-500"
+							/>
+						</div>
 
-						<AutoSuggestInput
-							label="Section (Ex: BSCS 501)"
-							placeholder="Enter section..."
-							value={newStudent.section}
-							onChange={(e) =>
-								setNewStudent({ ...newStudent, section: e.target.value })
-							}
-							type="section"
-						/>
-
-						<AutoSuggestInput
-							label="Student ID"
-							placeholder="Auto-filled"
-							value={newStudent.id}
-							onSelect={() => {}}
-							type="id"
-						/>
-
+						{/* Section */}
+						<div className="mb-4">
+							<label className="mb-1 block text-sm font-medium">
+								Section (Ex: BSCS501)
+							</label>
+							<input
+								type="text"
+								placeholder="Enter section..."
+								value={newStudent.section}
+								onChange={(e) =>
+									setNewStudent({ ...newStudent, section: e.target.value })
+								}
+								className="w-full rounded border px-3 py-2 focus:ring focus:ring-blue-500"
+							/>
+						</div>
 						<div>
-							<label className="mb-1 block text-sm font-medium text-gray-700">
-								Gatepass Code (Ex: 1)
+							<label className="mb-1 block text-sm font-medium">
+								Gatepass Code (Ex: 1 or 2)
 							</label>
 							<input
 								type="text"
@@ -140,30 +141,33 @@ export default function Dashboard() {
 							/>
 						</div>
 
-						<button
-							type="submit"
-							className={`relative left-[40%] mt-2 transform overflow-hidden rounded-md px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 ease-in-out hover:shadow-lg focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none active:scale-95 sm:mt-0 sm:w-auto ${
-								!newStudent.student_name
-									? 'cursor-not-allowed bg-gray-400 opacity-60'
-									: 'cursor-pointer bg-green-500 hover:-translate-y-0.5 hover:bg-green-600'
-							}`}
-						>
-							<span className="relative z-10 flex w-full items-center justify-center gap-2">
-								Start
-							</span>
-						</button>
+						<div className="mt-4 flex justify-center sm:justify-start">
+							<button
+								type="submit"
+								disabled={!newStudent.student_name}
+								className={`w-full rounded-md px-6 py-3 font-semibold text-white shadow-md transition-all duration-200 ease-in-out focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none active:scale-95 sm:w-auto ${
+									!newStudent.student_name
+										? 'cursor-not-allowed bg-gray-400 opacity-60'
+										: 'cursor-pointer bg-green-500 hover:-translate-y-0.5 hover:bg-green-600'
+								}`}
+							>
+								<span className="flex items-center justify-center gap-2">
+									Start
+								</span>
+							</button>
+						</div>
 					</form>
 
-					<button
+					{/* <button
 						onClick={() => setIsModalOpen(true)}
 						className="mt-4 w-full rounded-md bg-blue-500 px-6 py-3 font-semibold text-white shadow-md hover:bg-blue-600"
 					>
 						Add Student Not in List
-					</button>
-					<NewStudentModal
+					</button> */}
+					{/* <NewStudentModal
 						isOpen={isModalOpen}
 						onClose={() => setIsModalOpen(false)}
-					/>
+					/> */}
 				</div>
 
 				<div className="bg-secondary/70 max-h-[75vh] w-full flex-1 overflow-y-auto rounded-lg p-4 sm:p-6">

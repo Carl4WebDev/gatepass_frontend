@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useGatepass } from '../hooks/useGatepass';
 
 export default function NewStudentModal({ isOpen, onClose }) {
-	const { addGatepass } = useGatepass();
+	const { addGatepass, loading } = useGatepass();
 
 	const [student, setStudent] = useState({
 		student_name: '',
@@ -33,7 +33,7 @@ export default function NewStudentModal({ isOpen, onClose }) {
 	};
 
 	if (!isOpen) return null;
-
+	if (loading) return <p className="mt-4 text-center">Loading...</p>;
 	return (
 		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
 			<div className="relative w-full max-w-md rounded-lg bg-white p-6 shadow-lg">

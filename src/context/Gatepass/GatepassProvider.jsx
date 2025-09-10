@@ -42,6 +42,8 @@ export const GatepassProvider = ({ children }) => {
 
 	// Inside Dashboard component
 	const returnGatepass = async (gatepass_code, student_name) => {
+		setLoading(true);
+
 		try {
 			// Send POST request to backend
 			await axios.post(`${API_BASE}/gatepass/return-gatepass`, {
@@ -54,8 +56,10 @@ export const GatepassProvider = ({ children }) => {
 
 			// Optional: show a success message
 			console.log(`${student_name}'s gatepass returned successfully.`);
-		} catch (error) {
-			console.error('Error returning gatepass:', error);
+		} catch (err) {
+			showError(err.response?.data?.error || 'Something went wrong');
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -79,21 +83,27 @@ export const GatepassProvider = ({ children }) => {
 
 	// ✅ Fetch sanctions
 	const fetchSanctions = async () => {
+		setLoading(true);
 		try {
-			const res = await axios.get(`${API_BASE}}/gatepass/sanctions`);
+			const res = await axios.get(`${API_BASE}/gatepass/sanctions`);
 			if (res.data.success) {
 				setSanctions(res.data.data);
 			} else {
 				showError('❌ Failed to fetch sanctions');
 			}
-			console.log(res.data);
 		} catch (err) {
-			showError(err.response?.data?.error || 'Something went wrong');
+			showError(
+				err.response?.data?.error || 'Something went wrong from sanctions'
+			);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	// 🔹 Edit Gatepass (e.g., add sanction)
 	const editGatepass = async (id, updates) => {
+		setLoading(true);
+
 		try {
 			console.log('Sending request to edit gatepass:', id, updates);
 
@@ -102,8 +112,6 @@ export const GatepassProvider = ({ children }) => {
 				updates
 			);
 
-			console.log('Response received:', res.data);
-
 			if (res.data.success) {
 				setSuccess('✅ Gatepass updated successfully');
 				await fetchSanctions();
@@ -111,10 +119,9 @@ export const GatepassProvider = ({ children }) => {
 				showError('❌ Failed to update gatepass');
 			}
 		} catch (err) {
-			console.error('Error details:', err);
-			console.error('Response error:', err.response);
-
 			showError(err.response?.data?.error || 'Something went wrong');
+		} finally {
+			setLoading(false);
 		}
 	};
 
