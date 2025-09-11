@@ -11,8 +11,8 @@ export default function History() {
 	if (loading) return <p className="mt-4 text-center">Loading...</p>;
 
 	return (
-		<div className="table-container">
-			<table className="bg-accent scrollable-table w-full overflow-hidden rounded-md shadow-sm">
+		<div className="table-container h-[70vh]">
+			<table className="bg-accent scrollable-table w-full overflow-scroll overflow-x-visible overflow-y-visible rounded-md shadow-sm">
 				<thead className="bg-primary text-light">
 					<tr>
 						<th className="px-10 py-3 text-center font-semibold">
